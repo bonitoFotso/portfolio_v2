@@ -274,7 +274,7 @@ export default function Home(): React.ReactNode {
       document.removeEventListener('click', handleAnchorClick);
       document.removeEventListener('keydown', handleKeyNavigation);
     };
-  }, []);
+  }, [handleKeyNavigation]);
   
   // Suivi amélioré de la section active basé sur la position de défilement
   useEffect(() => {
@@ -358,7 +358,7 @@ export default function Home(): React.ReactNode {
         animate="visible"
       >
         <LabBackground />
-        <Navbar activeSection={activeSection} />
+        <Navbar />
         
         <div ref={sectionRefs.home} id="home">
           <HeroSection />
