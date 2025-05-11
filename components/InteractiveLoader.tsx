@@ -13,27 +13,34 @@ export const InteractiveLoader: React.FC<InteractiveLoaderProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [progress, setProgress] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
   
-  // Gérer le canvas et l'animation des particules
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) {
+      setError('Canvas context not supported');
+      return;
+    }
     
-    // Ajuster la taille du canvas à celle de la fenêtre
+    // Adjust canvas size with device pixel ratio for sharp rendering
+    const dpr = window.devicePixelRatio || 1;
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.scale(dpr, dpr);
     };
     
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     
-    // Créer les particules
+    // Create particles with improved performance
     const particlesArray: Particle[] = [];
-    const numberOfParticles = 200;
+    const numberOfParticles = Math.min(200, Math.floor((canvas.width * canvas.height) / 20000));
     
     class Particle {
       x: number;
@@ -44,11 +51,11 @@ export const InteractiveLoader: React.FC<InteractiveLoaderProps> = ({
       color: string;
       
       constructor() {
-        this.x = Math.random() * (canvas?.width ?? window.innerWidth);
-        this.y = Math.random() * (canvas?.height ?? window.innerHeight);
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
         this.color = `hsl(${Math.random() * 60 + 180}, 100%, 50%)`;
       }
       
@@ -56,35 +63,27 @@ export const InteractiveLoader: React.FC<InteractiveLoaderProps> = ({
         this.x += this.speedX;
         this.y += this.speedY;
         
-        // Effet d'attraction vers la souris
-        const dx = mouseX * (canvas?.width ?? window.innerWidth) - this.x;
-        const dy = mouseY * (canvas?.height ?? window.innerHeight) - this.y;
+        // Optimized mouse interaction
+        const dx = mouseX * canvas.width - this.x;
+        const dy = mouseY * canvas.height - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        const forceDirectionX = dx / distance;
-        const forceDirectionY = dy / distance;
-        
-        // Plus la souris est proche, plus l'attraction est forte
-        const maxDistance = 100;
-        const force = (maxDistance - distance) / maxDistance;
-        
-        if (distance < maxDistance) {
-          this.speedX += forceDirectionX * force * 0.6;
-          this.speedY += forceDirectionY * force * 0.6;
+        if (distance < 100) {
+          const angle = Math.atan2(dy, dx);
+          const force = (100 - distance) / 100;
+          this.speedX += Math.cos(angle) * force * 0.2;
+          this.speedY += Math.sin(angle) * force * 0.2;
         }
         
-        // Limiter la vitesse
-        this.speedX = Math.min(Math.max(this.speedX, -5), 5);
-        this.speedY = Math.min(Math.max(this.speedY, -5), 5);
+        // Speed limits
+        this.speedX = Math.min(Math.max(this.speedX, -4), 4);
+        this.speedY = Math.min(Math.max(this.speedY, -4), 4);
         
-        // Rebondir sur les bords
-        if (this.x < 0 || this.x > (canvas?.width ?? window.innerWidth)) {
-          this.speedX *= -1;
-        }
-        
-        if (this.y < 0 || this.y > (canvas?.height ?? window.innerHeight)) {
-          this.speedY *= -1;
-        }
+        // Boundary checks with improved performance
+        if (this.x < 0) this.x = canvas.width;
+        else if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        else if (this.y > canvas.height) this.y = 0;
       }
       
       draw(ctx: CanvasRenderingContext2D) {
@@ -95,91 +94,89 @@ export const InteractiveLoader: React.FC<InteractiveLoaderProps> = ({
       }
     }
     
-    // Initialiser les particules
+    // Initialize particles
     for (let i = 0; i < numberOfParticles; i++) {
       particlesArray.push(new Particle());
     }
     
-    // Animation
     let animationId: number;
-    const animate = () => {
+    let lastTime = performance.now();
+    
+    const animate = (currentTime: number) => {
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Augmenter progressivement le chargement
+      // Update progress with smooth animation
       setProgress(prev => {
-        const newProgress = prev + 0.5;
+        const newProgress = prev + 0.3 * (deltaTime / 16.67);
         if (newProgress >= 100) {
           cancelAnimationFrame(animationId);
-          setTimeout(onComplete, 500); // Petite pause avant de finaliser
+          setTimeout(onComplete, 500);
           return 100;
         }
         return newProgress;
       });
       
-      // Dessiner les lignes entre particules proches
-      ctx.strokeStyle = 'rgba(120, 200, 255, 0.1)';
-      ctx.lineWidth = 1;
-      for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-          const dx = particlesArray[a].x - particlesArray[b].x;
-          const dy = particlesArray[a].y - particlesArray[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
-          }
-        }
-      }
+      // Batch particle updates for better performance
+      const mouseXNormalized = mousePosition.x;
+      const mouseYNormalized = mousePosition.y;
       
-      // Mettre à jour et dessiner toutes les particules
       for (const particle of particlesArray) {
-        particle.update(mousePosition.x, mousePosition.y);
+        particle.update(mouseXNormalized, mouseYNormalized);
         particle.draw(ctx);
       }
       
-      // Dessiner le texte du logo au centre
-      const logoText = "PORTFOLIO";
+      // Draw logo and progress bar with improved visuals
+      ctx.save();
       ctx.fillStyle = 'white';
       ctx.font = 'bold 48px Arial';
-      const textMetrics = ctx.measureText(logoText);
-      ctx.fillText(
-        logoText, 
-        canvas.width / 2 - textMetrics.width / 2, 
-        canvas.height / 2
-      );
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('PORTFOLIO', canvas.width / 2, canvas.height / 2);
       
-      // Dessiner la barre de progression
       const progressBarWidth = 300;
       const progressBarHeight = 5;
+      const progressBarX = canvas.width / 2 - progressBarWidth / 2;
+      const progressBarY = canvas.height / 2 + 40;
+      
+      // Progress bar background
       ctx.fillStyle = 'rgba(200, 200, 200, 0.3)';
+      ctx.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+      
+      // Progress bar fill with gradient
+      const gradient = ctx.createLinearGradient(progressBarX, 0, progressBarX + progressBarWidth, 0);
+      gradient.addColorStop(0, 'rgba(120, 200, 255, 0.8)');
+      gradient.addColorStop(1, 'rgba(80, 160, 255, 0.8)');
+      ctx.fillStyle = gradient;
       ctx.fillRect(
-        canvas.width / 2 - progressBarWidth / 2, 
-        canvas.height / 2 + 40, 
-        progressBarWidth, 
+        progressBarX,
+        progressBarY,
+        progressBarWidth * (progress / 100),
         progressBarHeight
       );
       
-      ctx.fillStyle = 'rgba(120, 200, 255, 0.8)';
-      ctx.fillRect(
-        canvas.width / 2 - progressBarWidth / 2, 
-        canvas.height / 2 + 40, 
-        progressBarWidth * (progress / 100), 
-        progressBarHeight
-      );
+      ctx.restore();
       
       animationId = requestAnimationFrame(animate);
     };
     
-    animate();
+    animationId = requestAnimationFrame(animate);
     
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resizeCanvas);
     };
   }, [mousePosition, onComplete, progress]);
+  
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background text-foreground">
+        <p>Loading failed: {error}</p>
+      </div>
+    );
+  }
   
   return (
     <motion.div 
@@ -199,7 +196,6 @@ export const InteractiveLoader: React.FC<InteractiveLoaderProps> = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        // Effet de perspective basé sur la position de la souris
         transform: `perspective(1000px) rotateX(${mousePosition.y * -5}deg) rotateY(${mousePosition.x * 5}deg)`,
         transformStyle: 'preserve-3d',
         transition: 'transform 0.1s ease-out'
