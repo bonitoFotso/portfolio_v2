@@ -10,6 +10,7 @@ export function CustomCursor() {
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isButton, setIsButton] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   // Smooth cursor movement with spring physics
   const cursorX = useSpring(0, {
@@ -24,6 +25,12 @@ export function CustomCursor() {
   });
 
   useEffect(() => {
+    // Only show custom cursor on desktop
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsVisible(!isTouchDevice);
+
+    if (isTouchDevice) return;
+
     const mouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -70,6 +77,8 @@ export function CustomCursor() {
       });
     };
   }, [cursorX, cursorY]);
+
+  if (!isVisible) return null;
 
   return (
     <motion.div
