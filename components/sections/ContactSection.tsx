@@ -92,12 +92,15 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-32 relative bg-gradient-to-b from-background via-muted/20 to-background">
+    <section
+      id="contact"
+      className="py-32 relative bg-gradient-to-b from-background via-muted/20 to-background"
+    >
       {/* Decorative elements */}
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
       <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-500/5 blur-3xl" />
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-transparent" />
-      
+
       <div className="container mx-auto px-4 max-w-6xl relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,11 +110,11 @@ export function ContactSection() {
           className="mb-16 text-center"
         >
           <h2 className="text-4xl font-bold mb-2 text-foreground relative inline-block">
-            {t('contact.title')}
+            {t("contact.title")}
             <span className="absolute bottom-0 left-0 w-full h-1 bg-primary/70 rounded-full"></span>
           </h2>
           <p className="max-w-2xl mx-auto mt-8 text-muted-foreground leading-relaxed">
-            {t('contact.subtitle')}
+            {t("contact.subtitle")}
           </p>
         </motion.div>
 
@@ -131,31 +134,31 @@ export function ContactSection() {
                 <div className="space-y-2 mb-6">
                   <h3 className="text-2xl font-bold text-foreground flex items-center gap-2">
                     <MessageSquare className="h-5 w-5 text-primary" />
-                    <span>{t('contact.getInTouch')}</span>
+                    <span>{t("contact.getInTouch")}</span>
                   </h3>
                   <p className="text-muted-foreground text-sm">
                     Feel free to reach out through any of these channels.
                   </p>
                 </div>
-                
+
                 <div className="space-y-5">
                   {/* Social links */}
                   <h4 className="text-base font-medium text-foreground/80 border-b border-border/50 pb-2 flex items-center">
                     <span className="inline-block w-1.5 h-5 bg-primary/60 rounded-full mr-2"></span>
-                    {t('contact.socials')}
+                    {t("contact.socials")}
                   </h4>
-                  
-                  <motion.div 
+
+                  <motion.div
                     variants={staggerContainer}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
                     className="space-y-4"
                   >
-                    <motion.a 
+                    <motion.a
                       variants={fadeIn}
-                      href="https://github.com/yourusername" 
-                      target="_blank" 
+                      href="https://github.com/bonitoFotso"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/60 transition-colors group"
                     >
@@ -163,15 +166,19 @@ export function ContactSection() {
                         <Github className="h-5 w-5 text-primary" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium group-hover:text-primary transition-colors">GitHub</span>
-                        <span className="text-sm text-muted-foreground">@yourusername</span>
+                        <span className="font-medium group-hover:text-primary transition-colors">
+                          GitHub
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          @bonitoFotso
+                        </span>
                       </div>
                     </motion.a>
-                    
-                    <motion.a 
+
+                    <motion.a
                       variants={fadeIn}
-                      href="https://linkedin.com/in/yourusername" 
-                      target="_blank" 
+                      href="https://www.linkedin.com/in/bonito-fotso-fotso-89b54b243/"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/60 transition-colors group"
                     >
@@ -179,39 +186,47 @@ export function ContactSection() {
                         <Linkedin className="h-5 w-5 text-blue-500" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium group-hover:text-blue-500 transition-colors">LinkedIn</span>
-                        <span className="text-sm text-muted-foreground">Your Name</span>
+                        <span className="font-medium group-hover:text-blue-500 transition-colors">
+                          LinkedIn
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          Bonito fotso
+                        </span>
                       </div>
                     </motion.a>
-                    
-                    <motion.a 
+
+                    <motion.a
                       variants={fadeIn}
-                      href="mailto:youremail@example.com" 
+                      href="mailto:youremail@example.com"
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/60 transition-colors group"
                     >
                       <div className="p-2 rounded-md bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors">
                         <Mail className="h-5 w-5 text-purple-500" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium group-hover:text-purple-500 transition-colors">Email</span>
-                        <span className="text-sm text-muted-foreground">youremail@example.com</span>
+                        <span className="font-medium group-hover:text-purple-500 transition-colors">
+                          Email
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          bonitofotso55@gmail.com
+                        </span>
                       </div>
                     </motion.a>
                   </motion.div>
-                  
+
                   {/* Schedule section */}
                   <h4 className="text-base font-medium text-foreground/80 border-b border-border/50 pb-2 mt-6 pt-2 flex items-center">
                     <span className="inline-block w-1.5 h-5 bg-primary/60 rounded-full mr-2"></span>
-                    {t('contact.schedule')}
+                    {t("contact.schedule")}
                   </h4>
-                  
-                  <motion.a 
+
+                  <motion.a
                     variants={fadeIn}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    href="https://calendly.com/yourusername" 
-                    target="_blank" 
+                    href="https://calendly.com/bonitofotso"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/60 transition-colors group"
                   >
@@ -219,27 +234,31 @@ export function ContactSection() {
                       <Calendar className="h-5 w-5 text-emerald-500" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-medium group-hover:text-emerald-500 transition-colors">Schedule a Meeting</span>
-                      <span className="text-sm text-muted-foreground">via Calendly</span>
+                      <span className="font-medium group-hover:text-emerald-500 transition-colors">
+                        Schedule a Meeting
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        via Calendly
+                      </span>
                     </div>
                   </motion.a>
-                  
+
                   {/* Additional info */}
                   <div className="pt-5 mt-2 border-t border-border/30">
                     <div className="flex items-center text-sm text-muted-foreground mb-2">
                       <MapPin className="h-4 w-4 mr-2 text-primary/70" />
-                      <span>Location, Country</span>
+                      <span>Douala, Cameroon</span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Clock className="h-4 w-4 mr-2 text-primary/70" />
-                      <span>Available: Mon-Fri, 9AM - 5PM</span>
+                      <span>Available: Mon-Sun, 7AM - 5PM</span>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
-          
+
           {/* Contact Form Card */}
           <motion.div
             variants={fadeIn}
@@ -255,9 +274,12 @@ export function ContactSection() {
                   <Send className="h-5 w-5 text-primary" />
                   <span>Send Me a Message</span>
                 </h3>
-                
+
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                  >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <FormField
                         control={form.control}
@@ -266,12 +288,12 @@ export function ContactSection() {
                           <FormItem>
                             <FormLabel className="flex items-center gap-1.5">
                               <User className="h-3.5 w-3.5 text-primary/70" />
-                              {t('contact.form.name')}
+                              {t("contact.form.name")}
                             </FormLabel>
                             <FormControl>
-                              <Input 
-                                placeholder="Jane Doe" 
-                                {...field} 
+                              <Input
+                                placeholder=""
+                                {...field}
                                 className="bg-muted/40 focus:bg-background transition-colors border-border/50"
                               />
                             </FormControl>
@@ -279,7 +301,7 @@ export function ContactSection() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={form.control}
                         name="email"
@@ -287,12 +309,12 @@ export function ContactSection() {
                           <FormItem>
                             <FormLabel className="flex items-center gap-1.5">
                               <AtSign className="h-3.5 w-3.5 text-primary/70" />
-                              {t('contact.form.email')}
+                              {t("contact.form.email")}
                             </FormLabel>
                             <FormControl>
-                              <Input 
-                                placeholder="jane.doe@example.com" 
-                                {...field} 
+                              <Input
+                                placeholder="exemple@example.com"
+                                {...field}
                                 className="bg-muted/40 focus:bg-background transition-colors border-border/50"
                               />
                             </FormControl>
@@ -301,7 +323,7 @@ export function ContactSection() {
                         )}
                       />
                     </div>
-                    
+
                     <FormField
                       control={form.control}
                       name="subject"
@@ -309,12 +331,12 @@ export function ContactSection() {
                         <FormItem>
                           <FormLabel className="flex items-center gap-1.5">
                             <FileText className="h-3.5 w-3.5 text-primary/70" />
-                            {t('contact.form.subject')}
+                            {t("contact.form.subject")}
                           </FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Project Inquiry" 
-                              {...field} 
+                            <Input
+                              placeholder="Project Inquiry"
+                              {...field}
                               className="bg-muted/40 focus:bg-background transition-colors border-border/50"
                             />
                           </FormControl>
@@ -322,7 +344,7 @@ export function ContactSection() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="message"
@@ -330,28 +352,34 @@ export function ContactSection() {
                         <FormItem>
                           <FormLabel className="flex items-center gap-1.5">
                             <MessageSquare className="h-3.5 w-3.5 text-primary/70" />
-                            {t('contact.form.message')}
+                            {t("contact.form.message")}
                           </FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="I'd like to discuss a project with you..." 
-                              className="min-h-[150px] bg-muted/40 focus:bg-background transition-colors border-border/50" 
-                              {...field} 
+                            <Textarea
+                              placeholder="I'd like to discuss a project with you..."
+                              className="min-h-[150px] bg-muted/40 focus:bg-background transition-colors border-border/50"
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
-                    <Button 
-                      type="submit" 
+
+                    <Button
+                      type="submit"
                       className="w-full py-6 text-base group relative overflow-hidden bg-primary hover:bg-primary/90"
                       disabled={isSubmitting}
                     >
                       <span className="relative z-10 flex items-center justify-center gap-2">
-                        {isSubmitting ? 'Sending...' : t('contact.form.submit')}
-                        <Send className={`h-4 w-4 ${isSubmitting ? '' : 'group-hover:translate-x-1 transition-transform'}`} />
+                        {isSubmitting ? "Sending..." : t("contact.form.submit")}
+                        <Send
+                          className={`h-4 w-4 ${
+                            isSubmitting
+                              ? ""
+                              : "group-hover:translate-x-1 transition-transform"
+                          }`}
+                        />
                       </span>
                       <span className="absolute inset-0 w-0 bg-primary/80 group-hover:w-full transition-all duration-300"></span>
                     </Button>

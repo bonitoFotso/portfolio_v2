@@ -5,7 +5,7 @@ export const fr = {
   },
   nav: {
     home: "Accueil",
-    about: "À Propos",
+    about: "À Propos", 
     skills: "Compétences",
     projects: "Projets",
     experience: "Expérience",

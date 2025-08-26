@@ -67,7 +67,7 @@ export const en = {
     title: "Professional Experience",
     present: "Present",
     kes: {
-      title: "KES Africa",
+      title: "KES Africa", 
       date: "Mar 2024 - Present",
       position: "Web & Mobile Developer",
       description: "Academic internship turned into a professional internship. Development of applications with Django, React and Flutter.",
