@@ -197,7 +197,7 @@ export function ContactSection() {
 
                     <motion.a
                       variants={fadeIn}
-                      href="mailto:youremail@example.com"
+                      href="mailto:bonitofotso55@gmail.com"
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/60 transition-colors group"
                     >
                       <div className="p-2 rounded-md bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors">
